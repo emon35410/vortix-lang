@@ -1,0 +1,37 @@
+flux num1 = 100
+flux num2 = 5
+beam("--- Testing Division by Zero ---")
+beam(10 / 0)
+
+beam("--- Testing Spin (For Loop) ---")
+spin (flux i = 1; i < 4; i = i + 1) {
+    beam(i)
+}
+beam("--- Math Operations Test ---")
+
+beam("Addition (+):")
+beam(num1 + num2)
+
+beam("Subtraction (-):")
+beam(num1 - num2)
+
+beam("Multiplication (*):")
+beam(num1 * num2)
+
+beam("Division (/):")
+beam(num1 / num2)
+
+beam("--- Condition (If-Else) Test ---")
+path (num1 > num2) {
+    beam("num1 is strictly greater than num2!")
+} divert {
+    beam("num1 is smaller than or equal to num2!")
+}
+
+beam("--- Loop (Orbit) Test ---")
+beam("Counting from 1 to 5:")
+flux i = 1
+orbit (i < 6) {
+    beam(i)
+    i = i + 1
+}

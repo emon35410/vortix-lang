@@ -1,0 +1,89 @@
+========================================
+       VORTIX LANGUAGE MANUAL
+========================================
+
+Language Name: Vortix
+File Extension: .vtx
+Paradigm: Procedural, AST-based interpreted language
+
+----------------------------------------
+1. KEYWORD REFERENCE
+----------------------------------------
+Vortix uses unique, action-oriented keywords for a dynamic and minimalistic coding experience:
+
+* flux   : Used for variable declaration (equivalent to 'let' or 'var').
+* path   : Used for the true branch of a conditional statement (equivalent to 'if').
+* divert : Used for the false branch of a conditional statement (equivalent to 'else').
+* orbit  : Used for loop structures (equivalent to 'while').
+* spin   : Used for loop structures (equivalent to 'for loop').
+* beam   : Used to output data to the console (equivalent to 'print').
+* absorb : Used to take input (reserved for future standard library).
+
+----------------------------------------
+2. SYNTAX & FEATURES
+----------------------------------------
+
+[ Variables ]
+Variables are dynamically evaluated and currently support integers. You must declare a variable using 'flux' before assigning or reassigning it.
+Declaration: flux x = 10
+Reassignment: x = 20
+
+[ Output (I/O) ]
+Use the 'beam' keyword to print strings, variables, or integers to the standard output.
+Print String: beam("Hello, Vortix!")
+Print Variable: beam(x)
+
+[ Mathematical Operators ]
+Vortix supports standard arithmetic operations and follows standard mathematical precedence.
+* Addition: +
+* Subtraction: -
+* Multiplication: *
+* Division: /
+* Modulo: %
+
+[ Relational Operators ]
+Used strictly within conditions (path) and loops (orbit) to compare expressions.
+* Equal to: ==
+* Not equal to: !=
+* Greater than: >
+* Less than: <
+
+[ Conditional Statements ]
+Vortix uses 'path' and 'divert' to control the flow of execution based on boolean logic.
+
+path (a > b) {
+    beam("A is greater")
+} divert {
+    beam("B is greater or equal")
+}
+
+[ Loops ]
+The 'orbit' keyword creates a loop that continues to execute its block as long as the condition evaluates to true.
+
+flux i = 1
+orbit (i < 5) {
+    beam(i)
+    i = i + 1
+}
+
+----------------------------------------
+3. COMPLETE EXAMPLE SCRIPT
+----------------------------------------
+flux num1 = 100
+flux num2 = 5
+
+beam("--- Vortix Operations ---")
+beam(num1 + num2)
+
+path (num1 > num2) {
+    beam("num1 is strictly greater than num2!")
+} divert {
+    beam("num1 is smaller than or equal to num2!")
+}
+
+beam("--- Orbit Loop ---")
+flux count = 1
+orbit (count < 4) {
+    beam(count)
+    count = count + 1
+}
