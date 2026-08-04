@@ -35,3 +35,18 @@ orbit (i < 6) {
     beam(i)
     i = i + 1
 }
+
+
+beam("----------------------------------------")
+
+beam("--- Vortix Input Test ---")
+flux userValue = 0
+
+beam("Please enter a number:")
+absorb(userValue)
+
+beam("You entered:")
+beam(userValue)
+
+beam("If we multiply it by 5, the result is:")
+beam(userValue * 5)

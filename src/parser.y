@@ -38,9 +38,9 @@ int get_var(char *name) {
     return 0; 
 }
 
-/* Abstract Syntax Tree (AST) নোডের ধরন */
+/* Abstract Syntax Tree (AST) নোডের ধরন (N_INPUT যুক্ত করা হলো) */
 typedef enum { 
-    N_NUM, N_ID, N_OP, N_ASSIGN, N_IF, N_WHILE, N_FOR, N_PRINT, N_SEQ 
+    N_NUM, N_ID, N_OP, N_ASSIGN, N_IF, N_WHILE, N_FOR, N_PRINT, N_INPUT, N_SEQ 
 } NodeType;
 
 /* AST নোডের স্ট্রাকচার */
@@ -76,14 +76,16 @@ ASTNode* m_for(ASTNode* init, ASTNode* cond, ASTNode* inc, ASTNode* body) {
 ASTNode* m_print_expr(ASTNode* e) { ASTNode* n = new_node(N_PRINT); n->left = e; return n; }
 ASTNode* m_print_str(char* s) {
     ASTNode* n = new_node(N_PRINT);
-    s[strlen(s)-1] = '\0'; /* শেষের কোটেশন (") বাদ দেওয়া */
-    n->str = strdup(s+1);  /* শুরুর কোটেশন (") বাদ দেওয়া */
+    s[strlen(s)-1] = '\0';
+    n->str = strdup(s+1);
     return n;
 }
+/* ইনপুটের জন্য নতুন জেনারেটর */
+ASTNode* m_input(char* s) { ASTNode* n = new_node(N_INPUT); n->str = strdup(s); return n; }
 ASTNode* m_seq(ASTNode* s1, ASTNode* s2) { ASTNode* n = new_node(N_SEQ); n->left = s1; n->right = s2; return n; }
 
-ASTNode* root = NULL; /* ট্রির মূল (Root) */
-int eval(ASTNode* n); /* এক্সিকিউট ফাংশন ডিক্লারেশন */
+ASTNode* root = NULL;
+int eval(ASTNode* n);
 
 %}
 
@@ -98,7 +100,7 @@ int eval(ASTNode* n); /* এক্সিকিউট ফাংশন ডিক�
 %token FLUX PATH DIVERT ORBIT SPIN BEAM ABSORB
 %token EQ NEQ GT LT
 
-%type <ast> program statements statement declaration assignment if_statement loop_statement for_statement for_init print_statement condition expression
+%type <ast> program statements statement declaration assignment if_statement loop_statement for_statement for_init print_statement input_statement condition expression
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -121,7 +123,7 @@ statement:
     | loop_statement { $$ = $1; }
     | for_statement { $$ = $1; }
     | print_statement { $$ = $1; }
-    | input_statement { $$ = NULL; /* আপাতত ইনপুট স্কিপ করা হলো */ }
+    | input_statement { $$ = $1; }
     ;
 
 declaration:
@@ -155,8 +157,9 @@ print_statement:
     | BEAM '(' STRING ')' { $$ = m_print_str($3); free($3); }
     ;
 
+/* ইনপুট স্টেটমেন্ট আপডেট করা হলো */
 input_statement:
-    ABSORB '(' ID ')' { free($3); }
+    ABSORB '(' ID ')' { $$ = m_input($3); free($3); }
     ;
 
 condition:
@@ -230,6 +233,17 @@ int eval(ASTNode* n) {
             else printf("%d\n", eval(n->left));
             return 0;
         }
+        case N_INPUT: { /* ইউজারের কাছ থেকে ইনপুট নেওয়ার লজিক */
+            int val;
+            printf("Input value for %s: ", n->str);
+            if (scanf("%d", &val) == 1) {
+                set_var(n->str, val);
+            } else {
+                printf("Error: Invalid input! Setting %s to 0\n", n->str);
+                set_var(n->str, 0);
+            }
+            return val;
+        }
         case N_SEQ: {
             eval(n->left);
             eval(n->right);
@@ -249,13 +263,12 @@ int main(int argc, char **argv) {
         yyin = file;
     }
     
-    printf("Vortix Compiler Parsing...\n");
     yyparse();
     
     if (root) {
-        printf("\n=== VORTIX EXECUTION OUTPUT ===\n");
+        printf("\n=== VORTIX RUNTIME ===\n");
         eval(root);
-        printf("===============================\n");
+        printf("\n======================\n");
     }
     
     return 0;
