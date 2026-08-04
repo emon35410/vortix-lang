@@ -5,6 +5,7 @@ Vortix is a dynamic, minimalistic, and procedural interpreted programming langua
 ---
 
 ## 🧠 Under the Hood (Architecture)
+
 Unlike simple interpreters that execute code line-by-line instantly, Vortix follows a modern compiler design pipeline:
 
 1. **Lexical Analysis (Flex):** Reads the `.vtx` source code and converts raw text into meaningful tokens (e.g., matching `flux` to the `FLUX` token).
@@ -15,6 +16,7 @@ Unlike simple interpreters that execute code line-by-line instantly, Vortix foll
 ---
 
 ## ✨ Core Features
+
 - **Custom Lexer & Parser:** Robust tokenization and grammar handling.
 - **AST Execution:** Stable logic handling, allowing for complex nested loops and conditional branches.
 - **Dynamic Variables:** Dynamically assigned integers safely stored and updated in a memory Symbol Table.
@@ -57,51 +59,57 @@ Create a file named `demo.vtx` and write your first Vortix code:
 ```text
 beam("--- Vortix Operations Test ---")
 flux userValue = 0
-
 beam("Please enter a number:")
 absorb(userValue)
-
 path (userValue % 2 == 0) {
     beam("You entered an EVEN number!")
 } divert {
     beam("You entered an ODD number!")
 }
-
 beam("--- Spin (For) Loop Execution ---")
 spin (flux i = 1; i < 4; i = i + 1) {
     beam("Spinning...")
     beam(i)
 }
+```
 
+---
 
-🛠️ Prerequisites
+## 🛠️ Prerequisites
+
 To compile and run Vortix, you need the following tools installed on your Linux/WSL environment:
 
-GCC (GNU Compiler Collection)
+- GCC (GNU Compiler Collection)
+- Flex (Fast Lexical Analyzer)
+- Bison (GNU Parser Generator)
+- Make (Build automation tool)
 
-Flex (Fast Lexical Analyzer)
+---
 
-Bison (GNU Parser Generator)
+## 🚀 Build & Run (Usage)
 
-Make (Build automation tool)
-
-🚀 Build & Run (Usage)
 Thanks to the included Makefile, compiling the language is just one command away.
 
-1. Compile the project:
+**1. Compile the project:**
 
-Bash
+```bash
 make
-2. Run a Vortix script:
+```
 
-Bash
+**2. Run a Vortix script:**
+
+```bash
 ./vortix demo.vtx
-(Alternatively, you can use make run to instantly compile and execute the default demo.vtx script).
+```
 
-3. Clean auto-generated files:
+*(Alternatively, you can use `make run` to instantly compile and execute the default `demo.vtx` script).*
 
-Bash
+**3. Clean auto-generated files:**
+
+```bash
 make clean
+```
 
+---
 
-Developed by Mahmudul Hasan Emon
+Developed by **Mahmudul Hasan Emon**
